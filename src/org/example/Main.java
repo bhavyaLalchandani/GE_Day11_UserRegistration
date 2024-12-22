@@ -1,29 +1,51 @@
 package org.example;
 
-import java.util.Scanner;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Main {
+
     public static void main(String[] args) {
-        // Create a Scanner object to get user input
-        Scanner scanner = new Scanner(System.in);
 
-        // Regex pattern for Mobile Number validation
-        String mobilePattern = "^\\d{2} \\d{10}$"; // Country code followed by space and 10 digits
-        // Prompt user to enter a valid mobile number
-        System.out.println("Please enter your mobile number ");
+        // List of email samples (both valid and invalid)
+        List<String> emailSamples = List.of(
+                // Valid Emails
+                "abc@yahoo.com",         // Valid
+                "abc-100@yahoo.com",     // Valid
+                "abc.100@yahoo.com",     // Valid
+                "abc111@abc.com",        // Valid
+                "abc-100@abc.net",       // Valid
+                "abc.100@abc.com.au",    // Valid
+                "abc@1.com",             // Valid
+                "abc@gmail.com.com",     // Valid
+                "abc+100@gmail.com",     // Valid
 
-        // Read input from user
-        String mobileNumber = scanner.nextLine();
+                // Invalid Emails
+                "abc",                   // Invalid - Missing "@" symbol
+                "abc@.com.my",           // Invalid - TLD starts with a dot
+                "abc123@gmail.a",        // Invalid - TLD must have at least two characters
+                "abc123@.com",           // Invalid - TLD starts with a dot
+                "abc123@.com.com",       // Invalid - TLD starts with a dot
+                ".abc@abc.com",          // Invalid - First character is a dot
+                "abc()*@gmail.com",      // Invalid - Contains invalid characters
+                "abc@%*.com",            // Invalid - TLD contains invalid characters
+                "abc..2002@gmail.com",   // Invalid - Contains double dots
+                "abc.@gmail.com",        // Invalid - Ends with a dot
+                "abc@abc@gmail.com",     // Invalid - Contains multiple "@" symbols
+                "abc@gmail.com.1a",      // Invalid - TLD with two characters contains a digit
+                "abc@gmail.com.aa.au"    // Invalid - Multiple TLDs are not allowed
+        );
 
-        // Validate mobile number using regex pattern
-        if (Pattern.matches(mobilePattern, mobileNumber)) {
-            System.out.println("Valid mobile number: " + mobileNumber);
-        } else {
-            System.out.println("Invalid mobile number. Please enter a valid mobile number in the format 91 9919819801.");
+        // Regular Expression for valid email validation
+        String emailPattern = "^[a-zA-Z0-9]+([._+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}(\\.[a-zA-Z]{2,})?$";
+
+        // Check each email sample
+        for (String email : emailSamples) {
+            if (Pattern.matches(emailPattern, email)) {
+                System.out.println("Valid email: " + email);
+            } else {
+                System.out.println("Invalid email: " + email);
+            }
         }
-
-        // Close the scanner
-        scanner.close();
     }
 }
